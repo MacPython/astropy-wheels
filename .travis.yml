@@ -11,6 +11,7 @@ install:
   - source terryfy/travis_tools.sh
   - get_python_environment macpython $VERSION venv
   - pip install delocate numpy==$NUMPY_VERSION
+  - pip install pyyaml psutil Cython jinja2 pytest scipy h5py matplotlib beautifulsoup4
   - if [ -n "$ASTROPY_COMMIT" ]; then
       checkout_commit astropy $ASTROPY_COMMIT;
     fi
