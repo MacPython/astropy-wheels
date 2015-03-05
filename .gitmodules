@@ -1,0 +1,6 @@
+[submodule "astropy"]
+	path = astropy
+	url = git://github.com/astropy/astropy.git
+[submodule "terryfy"]
+	path = terryfy
+	url = git://github.com/MacPython/terryfy.git
