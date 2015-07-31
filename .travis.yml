@@ -2,7 +2,8 @@ language:
 - objective-c
 env:
   global:
-  - ASTROPY_COMMIT='latest-tag'  # comment out to build version in submodule
+  - BUILD_COMMIT='latest-tag'  # comment out to build version in submodule
+  - REPO_SDIR=astropy
   matrix:
   - VERSION=2.7.8 NUMPY_VERSION=1.6.2 # tune to taste
   - VERSION=3.3.5 NUMPY_VERSION=1.7.1
@@ -12,10 +13,10 @@ install:
   - get_python_environment macpython $VERSION venv
   - pip install delocate numpy==$NUMPY_VERSION
   - pip install pyyaml psutil Cython jinja2 pytest scipy h5py matplotlib beautifulsoup4
-  - if [ -n "$ASTROPY_COMMIT" ]; then
-      checkout_commit astropy $ASTROPY_COMMIT;
+  - if [ -n "$BUILD_COMMIT" ]; then
+      checkout_commit $REPO_SDIR $BUILD_COMMIT;
     fi
-  - cd astropy
+  - cd $REPO_SDIR
   - python setup.py bdist_wheel
   - delocate-listdeps dist/*.whl # lists library dependencies
   - delocate-wheel dist/*.whl # copies library dependencies into wheel
@@ -29,7 +30,7 @@ script:
   # Run the tests
   - python -c 'import sys; import astropy; sys.exit(astropy.test())'
   - cd ..
-before_deploy: cd astropy/dist
+before_deploy: cd $REPO_SDIR/dist
 deploy:
   provider: cloudfiles
   username: travis-worker
