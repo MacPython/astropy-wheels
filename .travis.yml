@@ -2,21 +2,27 @@ language:
 - objective-c
 env:
   global:
-  - BUILD_COMMIT=v1.0.3
-  - REPO_SDIR=astropy
+  - BUILD_COMMIT='latest-tag'  # comment out to build version in submodule
+  - REPO_DIR=astropy
   matrix:
   - VERSION=2.7.10 NUMPY_VERSION=1.6.2 # tune to taste
   - VERSION=3.3.5 NUMPY_VERSION=1.7.1
   - VERSION=3.4.3 NUMPY_VERSION=1.7.1
+  - VERSION=3.5.0 NUMPY_VERSION=1.7.1
 install:
   - source terryfy/travis_tools.sh
   - get_python_environment macpython $VERSION venv
+  # Update wheel for Python 3.5
+  - pip install -U wheel
   - pip install delocate numpy==$NUMPY_VERSION
+  # Use clang to avoid warnings on Python 3.5
+  - export CC=clang
+  - export CXX=clang++
   - pip install pyyaml psutil Cython jinja2 pytest scipy h5py matplotlib beautifulsoup4
   - if [ -n "$BUILD_COMMIT" ]; then
-      checkout_commit $REPO_SDIR $BUILD_COMMIT;
+      checkout_commit $REPO_DIR $BUILD_COMMIT;
     fi
-  - cd $REPO_SDIR
+  - cd $REPO_DIR
   - python setup.py bdist_wheel
   - delocate-listdeps dist/*.whl # lists library dependencies
   - delocate-wheel dist/*.whl # copies library dependencies into wheel
@@ -30,7 +36,8 @@ script:
   # Run the tests
   - python -c 'import sys; import astropy; sys.exit(astropy.test())'
   - cd ..
-before_deploy: cd $REPO_SDIR/dist
+before_deploy:
+  - cd $REPO_DIR/dist
 deploy:
   provider: cloudfiles
   username: travis-worker
