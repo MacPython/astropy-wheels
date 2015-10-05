@@ -14,7 +14,9 @@ install:
   - get_python_environment macpython $VERSION venv
   # Update wheel for Python 3.5
   - pip install -U wheel
-  - pip install delocate numpy==$NUMPY_VERSION
+  - pip install delocate
+  # Need nipy wheelhouse for Python 3.5 wheel
+  - pip install -f $NIPY_WHEELHOUSE numpy==$NUMPY_VERSION
   # Use clang to avoid warnings on Python 3.5
   - export CC=clang
   - export CXX=clang++
