@@ -5,10 +5,10 @@ env:
   - BUILD_COMMIT='latest-tag'  # comment out to build version in submodule
   - REPO_DIR=astropy
   matrix:
-  - VERSION=2.7.10 NUMPY_VERSION=1.6.2 # tune to taste
-  - VERSION=3.3.5 NUMPY_VERSION=1.7.1
-  - VERSION=3.4.3 NUMPY_VERSION=1.7.1
-  - VERSION=3.5.0 NUMPY_VERSION=1.7.1
+  - VERSION=2.7.10 NUMPY_VERSION=1.6.2 NUMPY_TEST_VERSION=1.6.2
+  - VERSION=3.3.5 NUMPY_VERSION=1.7.1 NUMPY_TEST_VERSION=1.8.1
+  - VERSION=3.4.3 NUMPY_VERSION=1.7.1 NUMPY_TEST_VERSION=1.8.1
+  - VERSION=3.5.0 NUMPY_VERSION=1.7.1 NUMPY_TEST_VERSION=1.8.1
 install:
   - source terryfy/travis_tools.sh
   - get_python_environment macpython $VERSION venv
@@ -25,6 +25,8 @@ install:
       checkout_commit $REPO_DIR $BUILD_COMMIT;
     fi
   - cd $REPO_DIR
+  # Just for debugging strange import error
+  - git clean -fxd
   - python setup.py bdist_wheel
   - delocate-listdeps dist/*.whl # lists library dependencies
   - delocate-wheel dist/*.whl # copies library dependencies into wheel
@@ -35,6 +37,8 @@ script:
   # install dependencies for tests e.g - pip install nose
   - mkdir tmp_for_test
   - cd tmp_for_test
+  # Install needed numpy version for tests
+  - pip install numpy==$NUMPY_TEST_VERSION
   # Run the tests
   - python -c 'import sys; import astropy; sys.exit(astropy.test())'
   - cd ..
