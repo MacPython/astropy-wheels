@@ -5,7 +5,7 @@ env:
       - UNICODE_WIDTHS="16 32"
       - NP_BUILD_DEP="numpy==1.7.1"
       - NP_TEST_DEP="numpy==1.7.1"
-      - GEN_DEPS="pyyaml psutil jinja2 scipy h5py matplotlib beautifulsoup4"
+      - GEN_DEPS="pyyaml psutil scipy h5py matplotlib beautifulsoup4"
 
 language: python
 sudo: required
@@ -40,7 +40,7 @@ matrix:
         - NP_TEST_DEP=numpy==1.9.3
 
 before_install:
-    - BUILD_DEPENDS="$NP_BUILD_DEP Cython $GEN_DEPS"
+    - BUILD_DEPENDS="$NP_BUILD_DEP Cython jinja2"
     - TEST_DEPENDS="$NP_TEST_DEP pytest $GEN_DEPS"
     - source multibuild/travis_steps.sh
     - before_install
