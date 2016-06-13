@@ -62,6 +62,7 @@ script:
 
 before_deploy:
     - cd wheelhouse
+    - ls *
 
 deploy:
   provider: cloudfiles
