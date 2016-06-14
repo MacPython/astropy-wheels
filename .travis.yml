@@ -6,6 +6,12 @@ env:
       - NP_BUILD_DEP="numpy==1.7.1"
       - NP_TEST_DEP="numpy==1.7.1"
       - GEN_DEPS="pyyaml psutil scipy h5py matplotlib beautifulsoup4"
+      - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
+      # Following generated with
+      # travis encrypt -r MacPython/astropy-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
+      - secure:
+          "MNKyBWOzu7JAUmC0Y+JhPKfytXxY/ADRmUIMEWZV977FLZPgYctqd+lqel2QIFgdHDO1CIdTSymOOFZckM9ICUXg9Ta+8oBjSvAVWO1ahDcToRM2DLq66fKg+NKimd2OfK7x597h/QmUSl4k8XyvyyXgl5jOiLg/EJxNE2r83IA="
+
 
 language: python
 sudo: required
@@ -60,16 +66,10 @@ script:
     - python -c 'import sys; import astropy; sys.exit(astropy.test())'
     - cd ..
 
-before_deploy:
-    - cd wheelhouse
-    - ls *
-
-deploy:
-  provider: cloudfiles
-  edge: true
-  username: travis-worker
-  api_key:
-      secure: "eRvhZ4GkrB6sUpH4tNHvdgN91Jrhl+F+7J4BXuH3Kql9kCrXlLvH+TtoYsDX1x6zAFJy1eVePtNbwMdzFcWP9koQXPHD2+o7U6AFomCN8KjJxd7ha8K7HDWbvn+R+bn1/tr0Fz04pyqlLyzM0pe+QO4JvcHQ+8TsDKuIDi9cYUE="
-  region: ORD
-  container: wheels
-  skip_cleanup: true
+after_success:
+    # Upload wheels to Rackspace container
+    - pip install wheelhouse-uploader
+    - python -m wheelhouse_uploader upload --local-folder
+          ${TRAVIS_BUILD_DIR}/wheelhouse/
+          --no-update-index
+          wheels
