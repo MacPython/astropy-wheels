@@ -2,7 +2,8 @@ env:
   global:
       - REPO_DIR=astropy
       - BUILD_COMMIT=v1.2rc1
-      - UNICODE_WIDTHS="16 32"
+      - PLAT=x86_64
+      - UNICODE_WIDTH=32
       - NP_BUILD_DEP="numpy==1.7.1"
       - NP_TEST_DEP="numpy==1.7.1"
       - GEN_DEPS="pyyaml psutil scipy h5py matplotlib beautifulsoup4"
@@ -11,7 +12,6 @@ env:
       # travis encrypt -r MacPython/astropy-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
       - secure:
           "MNKyBWOzu7JAUmC0Y+JhPKfytXxY/ADRmUIMEWZV977FLZPgYctqd+lqel2QIFgdHDO1CIdTSymOOFZckM9ICUXg9Ta+8oBjSvAVWO1ahDcToRM2DLq66fKg+NKimd2OfK7x597h/QmUSl4k8XyvyyXgl5jOiLg/EJxNE2r83IA="
-
 
 language: python
 sudo: required
@@ -23,27 +23,39 @@ matrix:
     - os: linux
       python: 2.7
     - os: linux
+      python: 2.7
+      env:
+        - UNICODE_WIDTH=16
+    - os: linux
+      python: 2.7
+      env:
+        - PLAT=i686
+    - os: linux
+      python: 2.7
+      env:
+        - PLAT=i686
+        - UNICODE_WIDTH=16
+    - os: linux
       python: 3.4
-      env: NP_TEST_DEP=numpy==1.8.1
+    - os: linux
+      python: 3.4
+      env:
+        - PLAT=i686
+    - os: linux
+      python: 3.5
     - os: linux
       python: 3.5
       env:
-        - NP_BUILD_DEP=numpy==1.9.3
-        - NP_TEST_DEP=numpy==1.9.3
+        - PLAT=i686
     - os: osx
       language: objective-c
       env: TRAVIS_PYTHON_VERSION=2.7
     - os: osx
       language: objective-c
-      env:
-        - TRAVIS_PYTHON_VERSION=3.4
-        - NP_TEST_DEP=numpy==1.8.1
+      env: TRAVIS_PYTHON_VERSION=3.4
     - os: osx
       language: objective-c
-      env:
-        - TRAVIS_PYTHON_VERSION=3.5
-        - NP_BUILD_DEP=numpy==1.9.3
-        - NP_TEST_DEP=numpy==1.9.3
+      env: TRAVIS_PYTHON_VERSION=3.5
 
 before_install:
     - BUILD_DEPENDS="$NP_BUILD_DEP Cython jinja2"
@@ -52,19 +64,10 @@ before_install:
     - before_install
 
 install:
-    - build_wheels
-    - install_wheel
-
-install:
-    - build_wheels
-    - install_wheel
+    - build_wheel
 
 script:
-    - mkdir tmp_for_test
-    - cd tmp_for_test
-    # Run the tests
-    - python -c 'import sys; import astropy; sys.exit(astropy.test())'
-    - cd ..
+    - install_run test_astropy.sh $PLAT
 
 after_success:
     # Upload wheels to Rackspace container
