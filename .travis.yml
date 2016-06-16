@@ -80,7 +80,7 @@ install:
     - build_wheel
 
 script:
-    - install_run install_test.sh $PLAT
+    - install_run $PLAT
 
 after_success:
     # Upload wheels to Rackspace container
