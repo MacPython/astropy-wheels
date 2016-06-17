@@ -77,7 +77,9 @@ before_install:
     - before_install
 
 install:
-    - build_wheel
+    # Maybe get and clean and patch source
+    - (cd $REPO_DIR && git fetch origin && git checkout $BUILD_COMMIT)
+    - build_wheel $REPO_DIR $PLAT
 
 script:
     - install_run $PLAT

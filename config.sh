@@ -1,17 +1,10 @@
 # Define custom utilities
 # If on OSX, this check will work
-# if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-set -e
+# if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ..
 
 function pre_build {
     # Any stuff that you need to do before you start building the wheels
     # Runs in the root directory of this repository.
-    :
-}
-
-function patch_source {
-    # Any stuff that you need to do to patch the source you are building
-    # Runs in the source directory
     :
 }
 
