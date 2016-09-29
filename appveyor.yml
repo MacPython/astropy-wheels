@@ -79,7 +79,7 @@ test_script:
     - ps: $path = Get-ChildItem -path "dist" -recurse -Include *.whl; pip install $path
 
     # run test
-    - "python setup.py test"
+    - "%CMD_IN_ENV% python setup.py test"
 
 on_success:
     - "pip install wheelhouse_uploader"
