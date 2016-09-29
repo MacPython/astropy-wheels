@@ -1,9 +1,8 @@
 environment:
   REPO_DIR: astropy
   BUILD_COMMIT: v1.2.1
-  BUILD_DEPENDS: "numpy>=1.7.0 cython"
+  BUILD_DEPENDS: "numpy>=1.7.0 cython jinja2"
   TEST_DEPENDS: "numpy>=1.7.0"
-  UNICODE_WIDTH: 32  # Anaconda CPython is compiled with 32bit unicode
 
   # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
   # /E:ON and /V:ON options are not enabled in the batch script intepreter
@@ -11,18 +10,18 @@ environment:
   CMD_IN_ENV: "cmd /E:ON /V:ON /C %APPVEYOR_BUILD_FOLDER%\\ci\\appveyor\\windows_sdk.cmd"
 
   matrix:
-    - PYTHON: "C:\\Miniconda"
-      PYTHON_VERSION: "2.7"
-      PYTHON_ARCH: "32"
-    - PYTHON: "C:\\Miniconda-x64"
-      PYTHON_VERSION: "2.7"
-      PYTHON_ARCH: "64"
-    - PYTHON: "C:\\Miniconda3"
-      PYTHON_VERSION: "3.4"
-      PYTHON_ARCH: "32"
-    - PYTHON: "C:\\Miniconda3-x64"
-      PYTHON_VERSION: "3.4"
-      PYTHON_ARCH: "64"
+    # - PYTHON: "C:\\Miniconda"
+    #   PYTHON_VERSION: "2.7"
+    #   PYTHON_ARCH: "32"
+    # - PYTHON: "C:\\Miniconda-x64"
+    #   PYTHON_VERSION: "2.7"
+    #   PYTHON_ARCH: "64"
+    # - PYTHON: "C:\\Miniconda3"
+    #   PYTHON_VERSION: "3.4"
+    #   PYTHON_ARCH: "32"
+    # - PYTHON: "C:\\Miniconda3-x64"
+    #   PYTHON_VERSION: "3.4"
+    #   PYTHON_ARCH: "64"
     - PYTHON: "C:\\Miniconda35"
       PYTHON_VERSION: "3.5"
       PYTHON_ARCH: "32"
