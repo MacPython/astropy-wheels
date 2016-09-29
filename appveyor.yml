@@ -1,7 +1,7 @@
 environment:
   REPO_DIR: astropy
   BUILD_COMMIT: v1.2.1
-  BUILD_DEPENDS: "numpy>=1.7.0"
+  BUILD_DEPENDS: "numpy>=1.7.0 cython"
   TEST_DEPENDS: "numpy>=1.7.0"
   UNICODE_WIDTH: 32  # Anaconda CPython is compiled with 32bit unicode
 
