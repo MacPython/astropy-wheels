@@ -1,13 +1,17 @@
 environment:
-  REPO_DIR: astropy
-  BUILD_COMMIT: v1.2.1
-  BUILD_DEPENDS: "numpy>=1.7.0 cython jinja2"
-  TEST_DEPENDS: "numpy>=1.7.0"
+  global:
+    REPO_DIR: astropy
+    PACKAGE_NAME: astropy
+    BUILD_COMMIT: v1.2.1
+    BUILD_DEPENDS: "numpy>=1.7.0 cython jinja2"
+    TEST_DEPENDS: "numpy>=1.7.0"
+    WHEELHOUSE_UPLOADER_USERNAME: travis-worker
+    WHEELHOUSE_UPLOADER_SECRET:
 
-  # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
-  # /E:ON and /V:ON options are not enabled in the batch script intepreter
-  # See: http://stackoverflow.com/a/13751649/163740
-  CMD_IN_ENV: "cmd /E:ON /V:ON /C %APPVEYOR_BUILD_FOLDER%\\ci\\appveyor\\windows_sdk.cmd"
+    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+    # /E:ON and /V:ON options are not enabled in the batch script intepreter
+    # See: http://stackoverflow.com/a/13751649/163740
+    CMD_IN_ENV: "cmd /E:ON /V:ON /C %APPVEYOR_BUILD_FOLDER%\\ci\\appveyor\\windows_sdk.cmd"
 
   matrix:
     - PYTHON: "C:\\Miniconda"
@@ -39,51 +43,45 @@ matrix:
     fast_finish: true
 
 install:
-    # If there is a newer build queued for the same PR, cancel this one.
-    # The AppVeyor 'rollout builds' option is supposed to serve the same
-    # purpose but it is problematic because it tends to cancel builds pushed
-    # directly to master instead of just PR builds (or the converse).
-    # credits: JuliaLang developers.
-    - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBE -ne ((Invoke-RestMethod `
-        https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
-        Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
-          throw "There are newer queued builds for this pull request, failing early." }
-
     # Install miniconda and fix headers
     - ps: .\\ci\\appveyor\\install.ps1
     - ps: .\\ci\\appveyor\\missing-headers.ps1
-    - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PATH%"
-    - "conda info"
+    - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PYTHON%\Library\bin;%PATH%
+    - conda info
+
+    # Check that we have the expected version and architecture for Python
+    - python --version
+    - python -c "import struct; print(struct.calcsize('P') * 8)"
 
     # Fetch submodules
-    - "git submodule update --init --recursive"
+    - git submodule update --init --recursive
 
-# Skip .NET project specific build phase.
-build: off
-
-test_script:
+build_script:
     # Install build requirements
-    - "conda install --yes %BUILD_DEPENDS%"
+    - conda install --yes %BUILD_DEPENDS%
 
     # build wheel:
-    - "cd %REPO_DIR%"
-    - "git checkout %BUILD_COMMIT%"
+    - cd %REPO_DIR%
+    - git checkout %BUILD_COMMIT%
     - "%CMD_IN_ENV% python setup.py bdist_wheel"
 
+test_script:
     # create test env
-    - "conda create --yes -n test_env python=%PYTHON_VERSION% %TEST_DEPENDS%"
-    - "activate test_env"
+    - conda create --yes -n test_env python=%PYTHON_VERSION% %TEST_DEPENDS%
+    - activate test_env
 
     # install from wheel
-    - ps: $path = Get-ChildItem -path "dist" -recurse -Include *.whl; pip install $path
+    - pip install --no-index --find-links dist/ %PACKAGE_NAME%
 
-    # run test
     - "%CMD_IN_ENV% python setup.py test"
-
-on_success:
-    - "pip install wheelhouse_uploader"
-    - "echo Upload here..."
 
 artifacts:
     - path: "%REPO_DIR%\\dist\\*"
-      name: wheel
+
+on_success:
+  # Upload the generated wheel package to Rackspace
+  # On Windows, Apache Libcloud cannot find a standard CA cert bundle so we
+  # disable the ssl checks.
+  - pip install wheelhouse-uploader
+  - python -m wheelhouse_uploader upload
+    --no-ssl-check --local-folder=dist --no-update-index wheels
