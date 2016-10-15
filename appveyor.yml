@@ -43,9 +43,8 @@ matrix:
     fast_finish: true
 
 install:
-    # Install miniconda and fix headers
+    # Install miniconda
     - ps: .\\ci\\appveyor\\install.ps1
-    - ps: .\\ci\\appveyor\\missing-headers.ps1
     - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PYTHON%\Library\bin;%PATH%
     - conda info
 
