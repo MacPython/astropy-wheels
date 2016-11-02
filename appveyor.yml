@@ -45,6 +45,9 @@ matrix:
     fast_finish: true
 
 install:
+    # Fetch submodules
+    - git submodule update --init --recursive
+
     # Install miniconda
     - ps: .\\multibuild\\ci\\appveyor\\install.ps1
     - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PYTHON%\Library\bin;%PATH%
@@ -53,9 +56,6 @@ install:
     # Check that we have the expected version and architecture for Python
     - python --version
     - python -c "import struct; print(struct.calcsize('P') * 8)"
-
-    # Fetch submodules
-    - git submodule update --init --recursive
 
 build_script:
     # Install build requirements
