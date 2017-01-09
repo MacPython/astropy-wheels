@@ -7,6 +7,16 @@ function pre_build {
     :
 }
 
+function pip_opts {
+    # Extra options for pip
+    if [ -n "$IS_OSX" ]; then
+        local suffix=scipy_installers
+    else
+        local suffix=manylinux
+    fi
+    echo "--find-links https://nipy.bic.berkeley.edu/$suffix"
+}
+
 function run_tests {
     # Runs tests on installed distribution from an empty directory
     python --version
