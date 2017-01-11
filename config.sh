@@ -14,7 +14,7 @@ function pip_opts {
     else
         local suffix=manylinux
     fi
-    echo "--find-links https://nipy.bic.berkeley.edu/$suffix"
+    echo "--only-binary matplotlib --find-links https://nipy.bic.berkeley.edu/$suffix"
 }
 
 function run_tests {
