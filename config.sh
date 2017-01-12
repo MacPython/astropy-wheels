@@ -20,5 +20,5 @@ function pip_opts {
 function run_tests {
     # Runs tests on installed distribution from an empty directory
     python --version
-    python -c 'import sys; import astropy; sys.exit(astropy.test())'
+    python -c "import sys; import astropy; sys.exit(astropy.test(remote_data='none'))"
 }
