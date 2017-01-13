@@ -82,7 +82,8 @@ test_script:
 
     # run test from installed wheel.
     - cd ..
-    - python -c "import sys; import astropy; sys.exit(astropy.test(remote_data='none'))"
+    # The test try to run cython/msvc so CMD_IN_ENV is needed
+    - "%CMD_IN_ENV% python -c \"import astropy; astropy.test(remote_data='none')\""
 
 artifacts:
     - path: "%REPO_DIR%\\dist\\*"
