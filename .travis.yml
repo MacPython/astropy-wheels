@@ -44,10 +44,12 @@ matrix:
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.4
+        - NP_BUILD_DEP=numpy==1.8.1
         - NP_TEST_DEP=numpy==1.8.1
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.4
+        - NP_BUILD_DEP=numpy==1.8.1
         - NP_TEST_DEP=numpy==1.8.1
         - PLAT=i686
     - os: linux
@@ -79,6 +81,7 @@ matrix:
       language: generic
       env:
         - MB_PYTHON_VERSION=3.4
+        - NP_BUILD_DEP=numpy==1.8.1
         - NP_TEST_DEP=numpy==1.8.1
     - os: osx
       language: generic
