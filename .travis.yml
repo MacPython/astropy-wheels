@@ -1,11 +1,11 @@
 env:
   global:
       - REPO_DIR=astropy
-      - BUILD_COMMIT=v1.3
+      - BUILD_COMMIT=v1.3.1
       - PLAT=x86_64
       - UNICODE_WIDTH=32
-      - NP_BUILD_DEP="numpy==1.7.1"
-      - NP_TEST_DEP="numpy==1.7.1"
+      - NP_BUILD_DEP="numpy==1.8.1"
+      - NP_TEST_DEP="numpy==1.8.1"
       - GEN_DEPS="pyyaml psutil scipy h5py matplotlib beautifulsoup4"
       - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
       # Following generated with
@@ -44,11 +44,9 @@ matrix:
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.4
-        - NP_TEST_DEP=numpy==1.8.1
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.4
-        - NP_TEST_DEP=numpy==1.8.1
         - PLAT=i686
     - os: linux
       env:
@@ -69,7 +67,7 @@ matrix:
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
-        - PLAT=x86_64
+        - PLAT=i686
         - NP_BUILD_DEP=numpy==1.11.3
         - NP_TEST_DEP=numpy==1.11.3
     - os: osx
@@ -79,7 +77,6 @@ matrix:
       language: generic
       env:
         - MB_PYTHON_VERSION=3.4
-        - NP_TEST_DEP=numpy==1.8.1
     - os: osx
       language: generic
       env:
