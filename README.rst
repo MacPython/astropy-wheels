@@ -3,10 +3,13 @@ Building and uploading astropy wheels
 #####################################
 
 We automate wheel building using this custom github repository that builds on
-the travis-ci OSX machines and the travis-ci Linux machines.
+the travis-ci OSX machines, travis-ci Linux machines, and the Appveyor VMs.
 
 The travis-ci interface for the builds is
 https://travis-ci.org/MacPython/astropy-wheels
+
+Appveyor interface at
+https://ci.appveyor.com/project/MacPython/astropy-wheels
 
 The driving github repository is
 https://github.com/MacPython/astropy-wheels
@@ -38,8 +41,8 @@ directory pointed to by http://wheels.scipy.org.
 Triggering a build
 ==================
 
-You will likely want to edit the ``.travis.yml`` file to specify the
-``BUILD_COMMIT`` before triggering a build - see below.
+You will likely want to edit the ``.travis.yml`` and ``appveyor.yml`` files to
+specify the ``BUILD_COMMIT`` before triggering a build - see below.
 
 You will need write permission to the github repository to trigger new builds
 on the travis-ci interface.  Contact us on the mailing list if you need this.
@@ -87,23 +90,48 @@ You will typically have a directory on your machine where you store wheels,
 called a `wheelhouse`.   The typical call for `wheel-uploader` would then
 be something like::
 
-    wheel-uploader -v -w ~/wheelhouse -t macosx astropy 1.2.1
-    wheel-uploader -v -w ~/wheelhouse -t manylinux1 astropy 1.2.1
-    wheel-uploader -v -w ~/wheelhouse -t win astropy 1.2.1
+    VERSION=1.3.2
+    CDN_URL=https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
+    wheel-uploader -r warehouse -u $CDN_URL -s -v -w ~/wheelhouse -t macosx astropy $VERSION
+    wheel-uploader -r warehouse -u $CDN_URL -s -v -w ~/wheelhouse -t manylinux1 astropy $VERSION
+    wheel-uploader -r warehouse -u $CDN_URL -s -v -w ~/wheelhouse -t win astropy $VERSION
 
 where:
 
-* `-v` means give verbose messages;
-* `-w ~/wheelhouse` means download the wheels from https://wheels.scipy.org to
-  the directory `~/wheelhouse`;
-* `astropy` is the root name of the wheel(s) to download / upload;
-* `1.2.1` is the version to download / upload.
+* ``-r warehouse`` uses the upcoming Warehouse PyPI server (it is more
+  reliable than the current PyPI service for uploads);
+* ``-u`` gives the URL from which to fetch the wheels, here the https address,
+  for some extra security;
+* ``-s`` causes twine to sign the wheels with your GPG key;
+* ``-v`` means give verbose messages;
+* ``-w ~/wheelhouse`` means download the wheels from to the local directory
+  ``~/wheelhouse``.
+
+`astropy` is the root name of the wheel(s) to download / upload and `1.3.2` is
+the version to download / upload.
+
+In order to use the Warehouse PyPI server, you will need something like this
+in your ``~/.pypirc`` file::
+
+    [distutils]
+    index-servers =
+        pypi
+        warehouse
+
+    [pypi]
+    username:your_user_name
+    password:your_password
+
+    [warehouse]
+    repository: https://upload.pypi.io/legacy/
+    username: your_user_name
+    password: your_password
 
 So, in this case, `wheel-uploader` will download all wheels starting with
-`astropy-1.2.1-` from http://wheels.scipy.org to `~/wheelhouse`, then upload
-them to pypi.
+`astropy-1.3.2-` from the URL in ``$CDN_URL`` above to ``~/wheelhouse``, then
+upload them to pypi.
 
-Of course, you will need permissions to upload to pypi, for this to work.
+Of course, you will need permissions to upload to PyPI, for this to work.
 
 .. _manylinux1: https://www.python.org/dev/peps/pep-0513
 .. _twine: https://pypi.python.org/pypi/twine
