@@ -1,5 +1,5 @@
---- astropy/io/misc/tests/test_hdf5.py.old
-+++ astropy/io/misc/tests/test_hdf5.py
+--- io/misc/tests/test_hdf5.py.old
++++ io/misc/tests/test_hdf5.py
 @@ -494,7 +494,8 @@ def test_metadata_very_large_fails_compatibility_mode(tmpdir):
 
      assert str(w[1].message).startswith(
