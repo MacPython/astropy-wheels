@@ -1,6 +1,7 @@
 env:
   global:
       - REPO_DIR=astropy
+      # Also see DAILY_COMMIT below
       - BUILD_COMMIT=v3.2.1
       - PLAT=x86_64
       - UNICODE_WIDTH=32
@@ -14,6 +15,8 @@ env:
           "MNKyBWOzu7JAUmC0Y+JhPKfytXxY/ADRmUIMEWZV977FLZPgYctqd+lqel2QIFgdHDO1CIdTSymOOFZckM9ICUXg9Ta+8oBjSvAVWO1ahDcToRM2DLq66fKg+NKimd2OfK7x597h/QmUSl4k8XyvyyXgl5jOiLg/EJxNE2r83IA="
       # Get extra wheels from Rackspace container
       - MANYLINUX_URL=https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com
+        # Commit when running from daily branch
+      - DAILY_COMMIT=master
 
 language: python
 # Default Python version is usually 2.7
@@ -73,8 +76,15 @@ matrix:
         - NP_TEST_DEP=numpy==1.14.5
 
 before_install:
-    - BUILD_DEPENDS="$NP_BUILD_DEP Cython jinja2 wheel"
-    - TEST_DEPENDS="$NP_TEST_DEP pytest-astropy $GEN_DEPS"
+    - if [ "$TRAVIS_BRANCH" == "daily" ]; then
+          CONTAINER="pre-release";
+          BUILD_COMMIT=${DAILY_COMMIT:-$BUILD_COMMIT};
+      else
+          CONTAINER=wheels;
+          UPLOAD_ARGS="--no-update-index";
+      fi
+    - BUILD_DEPENDS="$NP_BUILD_DEP Cython jinja2"
+    - TEST_DEPENDS="$NP_TEST_DEP pytest $GEN_DEPS"
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
     - before_install
@@ -92,5 +102,5 @@ after_success:
     - pip install wheelhouse-uploader
     - python -m wheelhouse_uploader upload --local-folder
           ${TRAVIS_BUILD_DIR}/wheelhouse/
-          --no-update-index
-          wheels
+          $UPLOAD_ARGS
+          $CONTAINER
