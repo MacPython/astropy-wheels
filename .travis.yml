@@ -1,6 +1,7 @@
 env:
   global:
       - REPO_DIR=astropy
+      # Also see DAILY_COMMIT below
       - BUILD_COMMIT=v2.0.2
       - PLAT=x86_64
       - UNICODE_WIDTH=32
@@ -12,6 +13,8 @@ env:
       # travis encrypt -r MacPython/astropy-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
       - secure:
           "MNKyBWOzu7JAUmC0Y+JhPKfytXxY/ADRmUIMEWZV977FLZPgYctqd+lqel2QIFgdHDO1CIdTSymOOFZckM9ICUXg9Ta+8oBjSvAVWO1ahDcToRM2DLq66fKg+NKimd2OfK7x597h/QmUSl4k8XyvyyXgl5jOiLg/EJxNE2r83IA="
+        # Commit when running from daily branch
+      - DAILY_COMMIT=master
 
 language: python
 # Default Python version is usually 2.7
@@ -91,6 +94,13 @@ matrix:
         - NP_TEST_DEP=numpy==1.11.3
 
 before_install:
+    - if [ "$TRAVIS_BRANCH" == "daily" ]; then
+          CONTAINER="pre-release";
+          BUILD_COMMIT=${DAILY_COMMIT:-$BUILD_COMMIT};
+      else
+          CONTAINER=wheels;
+          UPLOAD_ARGS="--no-update-index";
+      fi
     - BUILD_DEPENDS="$NP_BUILD_DEP Cython jinja2"
     - TEST_DEPENDS="$NP_TEST_DEP pytest $GEN_DEPS"
     - source multibuild/common_utils.sh
@@ -110,5 +120,5 @@ after_success:
     - pip install wheelhouse-uploader
     - python -m wheelhouse_uploader upload --local-folder
           ${TRAVIS_BUILD_DIR}/wheelhouse/
-          --no-update-index
-          wheels
+          $UPLOAD_ARGS
+          $CONTAINER
