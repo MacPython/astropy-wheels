@@ -1,5 +1,5 @@
 #####################################
-Building and uploading astropy wheels
+Building and uploading Astropy wheels
 #####################################
 
 We automate wheel building using this custom github repository that builds on
@@ -14,6 +14,35 @@ https://ci.appveyor.com/project/MacPython/astropy-wheels
 The driving github repository is
 https://github.com/MacPython/astropy-wheels
 
+Using the repository
+====================
+
+There are two important branches:
+
+* ``master`` - for building releases;
+* ``daily`` - for daily builds.
+
+Travis-CI builds the ``daily`` branch - er - daily, via a `Travis-CI cron job
+<https://docs.travis-ci.com/user/cron-jobs/>`_ to check that we can build
+against current Astropy master.   When trying to fix builds against master, or
+developing new CI build machinery, *please use the ``develop`` branch*.
+
+Builds from the ``daily`` branch upload to a Rackspace container for
+pre-releases at
+https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com
+
+Meanwhile, we usually leave the ``master`` branch in a state where it can
+build the last release.
+
+Builds from the ``master`` branch upload to a Rackspace container for releases
+at
+https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
+
+Before releasing, we *merge ``daily`` into ``master``*.
+
+Therefore, you will usually want to submit pull requests to the ``daily``
+branch, for testing.
+
 How it works
 ============
 
@@ -25,8 +54,9 @@ The wheel-building repository:
   (Manylinux1_).  ``delocate`` and ``auditwheel`` copy the required dynamic
   libraries into the wheel and relinks the extension modules against the
   copied libraries;
-* uploads the built wheels to http://wheels.scipy.org (a Rackspace container
-  kindly donated by Rackspace to scikit-learn).
+* uploads the built wheels to a Rackspace container - see "Using the
+  repository" above.  The containers were kindly donated by Rackspace to
+  scikit-learn).
 
 The resulting wheels are therefore self-contained and do not need any external
 dynamic libraries apart from those provided as standard by OSX / Linux as
@@ -36,7 +66,7 @@ The ``.travis.yml`` file in this repository has a line containing the API key
 for the Rackspace container encrypted with an RSA key that is unique to the
 repository - see http://docs.travis-ci.com/user/encryption-keys.  This
 encrypted key gives the travis build permission to upload to the Rackspace
-directory pointed to by http://wheels.scipy.org.
+containers we use to house the uploads.
 
 Triggering a build
 ==================
@@ -70,13 +100,14 @@ hash.
 Uploading the built wheels to pypi
 ==================================
 
-Be careful, http://wheels.scipy.org points to a container on a distributed
-content delivery network.  It can take up to 15 minutes for the new wheel file
-to get updated into the container at http://wheels.scipy.org.
+* pre-releases container visible at
+  https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com
+* release container visible at
+  https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
 
-The same contents appear at
-https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com;
-you might prefer this address because it is https.
+Be careful, these links point to containers on a distributed content delivery
+network.  It can take up to 15 minutes for the new wheel file to get updated
+into the containers at the links above.
 
 When the wheels are updated, you can download them to your machine manually,
 and then upload them manually to pypi, or by using twine_.  You can also use a
@@ -92,14 +123,10 @@ be something like::
 
     VERSION=1.3.2
     CDN_URL=https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
-    wheel-uploader -r warehouse -u $CDN_URL -s -v -w ~/wheelhouse -t macosx astropy $VERSION
-    wheel-uploader -r warehouse -u $CDN_URL -s -v -w ~/wheelhouse -t manylinux1 astropy $VERSION
-    wheel-uploader -r warehouse -u $CDN_URL -s -v -w ~/wheelhouse -t win astropy $VERSION
+    wheel-uploader -u $CDN_URL -s -v -w ~/wheelhouse -t all astropy $VERSION
 
 where:
 
-* ``-r warehouse`` uses the upcoming Warehouse PyPI server (it is more
-  reliable than the current PyPI service for uploads);
 * ``-u`` gives the URL from which to fetch the wheels, here the https address,
   for some extra security;
 * ``-s`` causes twine to sign the wheels with your GPG key;
@@ -110,22 +137,16 @@ where:
 `astropy` is the root name of the wheel(s) to download / upload and `1.3.2` is
 the version to download / upload.
 
-In order to use the Warehouse PyPI server, you will need something like this
+In order to upload the wheels, you will need something like this
 in your ``~/.pypirc`` file::
 
     [distutils]
     index-servers =
         pypi
-        warehouse
 
     [pypi]
     username:your_user_name
     password:your_password
-
-    [warehouse]
-    repository: https://upload.pypi.io/legacy/
-    username: your_user_name
-    password: your_password
 
 So, in this case, `wheel-uploader` will download all wheels starting with
 `astropy-1.3.2-` from the URL in ``$CDN_URL`` above to ``~/wheelhouse``, then
