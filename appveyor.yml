@@ -2,9 +2,9 @@ environment:
   global:
     REPO_DIR: astropy
     PACKAGE_NAME: astropy
-    BUILD_COMMIT: v3.0rc1
-    BUILD_DEPENDS: "numpy>=1.9.0 cython jinja2"
-    TEST_DEPENDS: "numpy>=1.9.0 pytest"
+    BUILD_COMMIT: v3.0
+    BUILD_DEPENDS: "numpy>=1.10 cython jinja2"
+    TEST_DEPENDS: "numpy>=1.10 pytest-astropy"
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
     WHEELHOUSE_UPLOADER_SECRET:
         secure:
