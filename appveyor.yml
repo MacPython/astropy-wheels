@@ -2,9 +2,10 @@ environment:
   global:
     REPO_DIR: astropy
     PACKAGE_NAME: astropy
-    BUILD_COMMIT: v3.0rc1
-    BUILD_DEPENDS: "numpy>=1.9.0 cython jinja2"
-    TEST_DEPENDS: "numpy>=1.9.0 pytest"
+    BUILD_COMMIT: v3.0
+    BUILD_DEPENDS: "numpy>=1.10 cython jinja2"
+    TEST_DEPENDS: "numpy>=1.10"
+    PIP_DEPENDENCIES: "pytest-astropy"
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
     WHEELHOUSE_UPLOADER_SECRET:
         secure:
@@ -16,18 +17,6 @@ environment:
     CMD_IN_ENV: "cmd /E:ON /V:ON /C %APPVEYOR_BUILD_FOLDER%\\multibuild\\ci\\appveyor\\windows_sdk.cmd"
 
   matrix:
-    - PYTHON: "C:\\Miniconda"
-      PYTHON_VERSION: "2.7"
-      PYTHON_ARCH: "32"
-    - PYTHON: "C:\\Miniconda-x64"
-      PYTHON_VERSION: "2.7"
-      PYTHON_ARCH: "64"
-    - PYTHON: "C:\\Miniconda3"
-      PYTHON_VERSION: "3.4"
-      PYTHON_ARCH: "32"
-    - PYTHON: "C:\\Miniconda3-x64"
-      PYTHON_VERSION: "3.4"
-      PYTHON_ARCH: "64"
     - PYTHON: "C:\\Miniconda35"
       PYTHON_VERSION: "3.5"
       PYTHON_ARCH: "32"
@@ -76,6 +65,7 @@ test_script:
     # create test env
     - conda create --yes -n test_env python=%PYTHON_VERSION% %TEST_DEPENDS%
     - activate test_env
+    - pip install %PIP_DEPENDENCIES%
 
     # install from wheel
     - pip install --no-index --find-links dist/ %PACKAGE_NAME%
