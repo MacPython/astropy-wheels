@@ -56,7 +56,7 @@ install:
 
     # Install miniconda
     - ps: .\\multibuild\\ci\\appveyor\\install.ps1
-    - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PYTHON%\Library\bin;%PATH%
+    - SET PATH=%PYTHON%\Scripts;%PYTHON%\Library\bin;%PATH%
     - conda info
 
     # Check that we have the expected version and architecture for Python
