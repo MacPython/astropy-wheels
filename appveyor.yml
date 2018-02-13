@@ -77,8 +77,11 @@ test_script:
     - conda create --yes -n test_env python=%PYTHON_VERSION% %TEST_DEPENDS%
     - activate test_env
 
+    # for debugging
+    - dir dist
+
     # install from wheel
-    - pip install --no-index --find-links dist/ %PACKAGE_NAME%
+    - pip install --no-index --find-links dist %PACKAGE_NAME%
 
     # run test from installed wheel.
     - cd ..
