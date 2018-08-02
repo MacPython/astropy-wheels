@@ -6,7 +6,7 @@ environment:
     NP_BUILD_DEP: "numpy==1.9.3"
     NP_TEST_DEP: "numpy==1.9.3"
     OTHER_BUILD_DEP: "cython jinja2"
-    OTHER_TEST_DEP: "pytest"
+    OTHER_TEST_DEP: "pytest<3.7"
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
     WHEELHOUSE_UPLOADER_SECRET:
         secure:
