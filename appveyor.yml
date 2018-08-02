@@ -31,7 +31,7 @@ environment:
       NP_TEST_DEP: "numpy==1.11.3"
 
 matrix:
-    fast_finish: true
+    fast_finish: false    # We want to get as many of the combinations as possible even if some are failing
 
 install:
     # Fetch submodules
