@@ -5,11 +5,11 @@ environment:
   global:
     REPO_DIR: astropy
     PACKAGE_NAME: astropy
-    BUILD_COMMIT: v3.0.3
+    BUILD_COMMIT: v3.0.4
     NP_BUILD_DEP: "numpy==1.10.4"
     NP_TEST_DEP: "numpy==1.10.4"
     OTHER_BUILD_DEP: "cython jinja2"
-    OTHER_TEST_DEP: "pytest-astropy"
+    OTHER_TEST_DEP: "pytest-astropy pytest<3.7"
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
     WHEELHOUSE_UPLOADER_SECRET:
         secure:
@@ -24,6 +24,12 @@ environment:
     - PYTHON: C:\Python36-x64
       NP_BUILD_DEP: "numpy==1.12"
       NP_TEST_DEP: "numpy==1.12"
+    - PYTHON: C:\Python37
+      NUMPY_BUILD_DEP: numpy==1.14.5
+      NP_TEST_DEP: "numpy==1.14.5"
+    - PYTHON: C:\Python37-x64
+      NUMPY_BUILD_DEP: numpy==1.14.5
+      NP_TEST_DEP: "numpy==1.14.5"
 
 
 matrix:
