@@ -80,6 +80,8 @@ matrix:
         - NP_TEST_DEP=numpy==1.14.5
 
 before_install:
+    # https://github.com/travis-ci/travis-ci/issues/8920#issuecomment-352661024
+    - python -c "import fcntl; fcntl.fcntl(1, fcntl.F_SETFL, 0)"
     - BUILD_DEPENDS="$NP_BUILD_DEP Cython jinja2 wheel"
     - TEST_DEPENDS="$NP_TEST_DEP pytest-astropy $GEN_DEPS"
     - source multibuild/common_utils.sh

@@ -25,10 +25,10 @@ environment:
       NP_BUILD_DEP: "numpy==1.12"
       NP_TEST_DEP: "numpy==1.12"
     - PYTHON: C:\Python37
-      NUMPY_BUILD_DEP: numpy==1.14.5
+      NP_BUILD_DEP: "numpy==1.14.5"
       NP_TEST_DEP: "numpy==1.14.5"
     - PYTHON: C:\Python37-x64
-      NUMPY_BUILD_DEP: numpy==1.14.5
+      NP_BUILD_DEP: "numpy==1.14.5"
       NP_TEST_DEP: "numpy==1.14.5"
 
 
