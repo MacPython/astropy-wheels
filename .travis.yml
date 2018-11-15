@@ -6,7 +6,7 @@ env:
       - UNICODE_WIDTH=32
       - NP_BUILD_DEP="numpy==1.13.3"
       - NP_TEST_DEP="numpy==1.13.3"
-      - GEN_DEPS="pyyaml psutil pytest-astropy scipy h5py matplotlib beautifulsoup4 wheel"
+      - GEN_DEPS="pyyaml psutil pytest<4 pytest-astropy scipy h5py matplotlib beautifulsoup4 wheel"
       - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
       # Following generated with
       # travis encrypt -r MacPython/astropy-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
