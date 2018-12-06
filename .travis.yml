@@ -38,6 +38,8 @@ matrix:
         - PLAT=i686
         - NP_BUILD_DEP=numpy==1.14.5
         - NP_TEST_DEP=numpy==1.14.5
+        # There are no wheels for Matplotlib with Python 3.7 for 32-bit
+        - GEN_DEPS="pyyaml psutil pytest pytest-astropy scipy h5py beautifulsoup4 wheel"
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.5
@@ -45,6 +47,9 @@ matrix:
       env:
         - MB_PYTHON_VERSION=3.5
         - PLAT=i686
+        # The latest wheel that is used for Matplotlib is 2.0.0b1, which has
+        # bugs that cause Astropy test failures, so we don't include it here.
+        - GEN_DEPS="pyyaml psutil pytest pytest-astropy scipy h5py beautifulsoup4 wheel"
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
