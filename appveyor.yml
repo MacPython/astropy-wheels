@@ -50,7 +50,7 @@ install:
 
 build_script:
     # Install the dependencies of the project.
-    - python -m pip install %NP_BUILD_DEP% %OTHER_BUILD_DEPENDS% --only-binary numpy
+    - python -m pip install %NP_BUILD_DEP% %OTHER_BUILD_DEPENDS%
     # Build wheel
     - python -m pip install wheel
     - cd %REPO_DIR%
@@ -63,7 +63,7 @@ test_script:
     - virtualenv --python %PYTHON%\Python.exe test_env
     - test_env\Scripts\activate.bat
     - where python
-    - python -m pip install %NP_TEST_DEP% %OTHER_TEST_DEP% --only-binary numpy
+    - python -m pip install %NP_TEST_DEP% %OTHER_TEST_DEP%
 
     # install from wheel
     - python -m pip install --pre --no-index --find-links %REPO_DIR%\dist\ %PACKAGE_NAME%
