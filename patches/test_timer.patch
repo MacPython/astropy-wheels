@@ -1,0 +1,10 @@
+--- utils/tests/test_timer.py
++++ utils/tests/test_timer.py
+@@ -38,6 +38,7 @@ def func_to_time(x):
+     return y
+
+
++@pytest.mark.skip
+ def test_timer():
+     """Test function timer."""
+     p = RunTimePredictor(func_to_time)
