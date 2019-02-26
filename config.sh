@@ -9,12 +9,7 @@ function pre_build {
 
 function pip_opts {
     # Extra options for pip
-    if [ -n "$IS_OSX" ]; then
-        local suffix=scipy_installers
-    else
-        local suffix=manylinux
-    fi
-    echo "--only-binary matplotlib --find-links https://nipy.bic.berkeley.edu/$suffix"
+    echo "--only-binary matplotlib --find-links ${MANYLINUX_URL}"
 }
 
 function run_tests {
