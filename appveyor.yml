@@ -50,7 +50,7 @@ install:
 
 build_script:
     # Install the dependencies of the project.
-    - python -m pip install %NP_BUILD_DEP% %OTHER_BUILD_DEPENDS%
+    - python -m pip install %NP_BUILD_DEP% %OTHER_BUILD_DEP%
     # Build wheel
     - python -m pip install wheel
     - cd %REPO_DIR%
