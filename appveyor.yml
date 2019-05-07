@@ -8,7 +8,7 @@ environment:
     BUILD_COMMIT: v3.2rc1
     NP_BUILD_DEP: "numpy==1.13.3"
     NP_TEST_DEP: "numpy==1.13.3"
-    OTHER_BUILD_DEP: "cython jinja2 setuptools>30.3"
+    OTHER_BUILD_DEP: "cython jinja2"
     OTHER_TEST_DEP: "pytest-astropy"
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
     WHEELHOUSE_UPLOADER_SECRET:
@@ -38,7 +38,7 @@ install:
     # done from inside the powershell script as it would require to restart
     # the parent CMD process).
     - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
-    - python -m pip install -U pip
+    - python -m pip install -U pip setuptools
 
     # Fix MSVC builds for 64-bit Python. See:
     # http://stackoverflow.com/questions/32091593/cannot-install-windows-sdk-7-1-on-windows-10
