@@ -20,15 +20,15 @@ env:
 
 language: python
 # Default Python version is usually 2.7
-python: 3.5
+python: 3.6
 sudo: required
 dist: trusty
 services: docker
 
 matrix:
   exclude:
-      # Exclude the default Python 3.5 build
-      - python: 3.5
+      # Exclude the default Python 3.6 build
+      - python: 3.6
   include:
     - os: linux
       env:
@@ -45,25 +45,11 @@ matrix:
         - GEN_DEPS="pyyaml psutil pytest pytest-astropy scipy h5py beautifulsoup4 wheel"
     - os: linux
       env:
-        - MB_PYTHON_VERSION=3.5
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.5
-        - PLAT=i686
-        # The latest wheel that is used for Matplotlib is 2.0.0b1, which has
-        # bugs that cause Astropy test failures, so we don't include it here.
-        - GEN_DEPS="pyyaml psutil pytest pytest-astropy scipy h5py beautifulsoup4 wheel"
-    - os: linux
-      env:
         - MB_PYTHON_VERSION=3.6
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
         - PLAT=i686
-    - os: osx
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.5
     - os: osx
       language: generic
       env:
