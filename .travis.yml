@@ -31,13 +31,13 @@ matrix:
       env:
         - MB_PYTHON_VERSION=3.7
         - NP_BUILD_DEP=numpy==1.14.6
-        - NP_TEST_DEP=numpy==1.14.6
+        - NP_TEST_DEP=numpy==1.16.5
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=i686
         - NP_BUILD_DEP=numpy==1.14.6
-        - NP_TEST_DEP=numpy==1.14.6
+        - NP_TEST_DEP=numpy==1.16.5
         # There are no wheels for Matplotlib with Python 3.7 for 32-bit
         - GEN_DEPS="pyyaml psutil pytest pytest-astropy scipy h5py beautifulsoup4 wheel"
     - os: linux
@@ -70,7 +70,7 @@ matrix:
       env:
         - MB_PYTHON_VERSION=3.7
         - NP_BUILD_DEP=numpy==1.14.6
-        - NP_TEST_DEP=numpy==1.14.6
+        - NP_TEST_DEP=numpy==1.16.5
 
 before_install:
     - BUILD_DEPENDS="$NP_BUILD_DEP Cython jinja2 wheel"
