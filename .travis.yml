@@ -27,19 +27,7 @@ matrix:
       # Exclude the default Python 3.5 build
       - python: 3.5
   include:
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.7
-        - NP_BUILD_DEP=numpy==1.14.6
-        - NP_TEST_DEP=numpy==1.16.5
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.7
-        - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.14.6
-        - NP_TEST_DEP=numpy==1.16.5
-        # There are no wheels for Matplotlib with Python 3.7 for 32-bit
-        - GEN_DEPS="pyyaml psutil pytest pytest-astropy scipy h5py beautifulsoup4 wheel"
+
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.5
@@ -50,6 +38,7 @@ matrix:
         # The latest wheel that is used for Matplotlib is 2.0.0b1, which has
         # bugs that cause Astropy test failures, so we don't include it here.
         - GEN_DEPS="pyyaml psutil pytest pytest-astropy scipy h5py beautifulsoup4 wheel"
+
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
@@ -59,6 +48,34 @@ matrix:
         - PLAT=i686
         # Matplotlib doesn't work properly for 32-bit
         - GEN_DEPS="pyyaml psutil pytest pytest-astropy scipy h5py beautifulsoup4 wheel"
+
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - NP_BUILD_DEP=numpy==1.14.6
+        - NP_TEST_DEP=numpy==1.14.6
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - PLAT=i686
+        - NP_BUILD_DEP=numpy==1.14.6
+        - NP_TEST_DEP=numpy==1.14.6
+        - GEN_DEPS="pyyaml psutil pytest pytest-astropy beautifulsoup4 wheel"
+
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - GEN_DEPS="pyyaml psutil pytest pytest-astropy beautifulsoup4 wheel"
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - PLAT=i686
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - GEN_DEPS="pyyaml psutil pytest pytest-astropy beautifulsoup4 wheel"
+
     - os: osx
       language: generic
       env:
@@ -72,7 +89,15 @@ matrix:
       env:
         - MB_PYTHON_VERSION=3.7
         - NP_BUILD_DEP=numpy==1.14.6
-        - NP_TEST_DEP=numpy==1.16.5
+        - NP_TEST_DEP=numpy==1.14.6
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - MB_PYTHON_OSX_VER=10.9
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - GEN_DEPS="pyyaml psutil pytest pytest-astropy beautifulsoup4 wheel"
 
 before_install:
     - BUILD_DEPENDS="$NP_BUILD_DEP Cython jinja2 wheel"

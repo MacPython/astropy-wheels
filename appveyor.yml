@@ -22,10 +22,16 @@ environment:
     - PYTHON: C:\Python36-x64
     - PYTHON: C:\Python37
       NP_BUILD_DEP: numpy==1.14.4
-      NP_TEST_DEP: "numpy==1.16.5"
+      NP_TEST_DEP: "numpy==1.14.6"
     - PYTHON: C:\Python37-x64
       NP_BUILD_DEP: numpy==1.14.4
-      NP_TEST_DEP: "numpy==1.16.5"
+      NP_TEST_DEP: "numpy==1.14.6"
+    - PYTHON: C:\Python38
+      NP_BUILD_DEP: numpy==1.17.3
+      NP_TEST_DEP: "numpy==1.17.3"
+    - PYTHON: C:\Python38-x64
+      NP_BUILD_DEP: numpy==1.17.3
+      NP_TEST_DEP: "numpy==1.17.3"
 
 
 matrix:
@@ -34,6 +40,10 @@ matrix:
 install:
     # Fetch submodules
     - git submodule update --init --recursive
+
+    # Install new Python if necessary
+    - ps: .\multibuild\install_python.ps1
+
     # Prepend newly installed Python to the PATH of this build (this cannot be
     # done from inside the powershell script as it would require to restart
     # the parent CMD process).
