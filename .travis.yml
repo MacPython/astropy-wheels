@@ -27,6 +27,30 @@ matrix:
       # Exclude the default Python 3.5 build
       - python: 3.5
   include:
+    # add osx first into the queue as they have lower parallelism
+    #
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.5
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.6
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - NP_BUILD_DEP=numpy==1.14.6
+        - NP_TEST_DEP=numpy==1.14.6
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - MB_PYTHON_OSX_VER=10.9
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - GEN_DEPS="pyyaml psutil pytest pytest-astropy beautifulsoup4 wheel"
 
     - os: linux
       env:
@@ -76,28 +100,6 @@ matrix:
         - NP_TEST_DEP=numpy==1.17.3
         - GEN_DEPS="pyyaml psutil pytest pytest-astropy beautifulsoup4 wheel"
 
-    - os: osx
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.5
-    - os: osx
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.6
-    - os: osx
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.7
-        - NP_BUILD_DEP=numpy==1.14.6
-        - NP_TEST_DEP=numpy==1.14.6
-    - os: osx
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.8
-        - MB_PYTHON_OSX_VER=10.9
-        - NP_BUILD_DEP=numpy==1.17.3
-        - NP_TEST_DEP=numpy==1.17.3
-        - GEN_DEPS="pyyaml psutil pytest pytest-astropy beautifulsoup4 wheel"
 
 before_install:
     - BUILD_DEPENDS="$NP_BUILD_DEP Cython jinja2 wheel"
