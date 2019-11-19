@@ -63,6 +63,7 @@ build_script:
     - python -m pip install wheel
     - cd %REPO_DIR%
     - git checkout %BUILD_COMMIT%
+    - git apply ..\patches\free_space_in_dir.path
     - python setup.py bdist_wheel
     - cd ..
 
