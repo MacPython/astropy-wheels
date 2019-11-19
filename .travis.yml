@@ -1,11 +1,11 @@
 env:
   global:
       - REPO_DIR=astropy
-      - BUILD_COMMIT=v3.2.3
+      - BUILD_COMMIT=v4.0rc1
       - PLAT=x86_64
       - UNICODE_WIDTH=32
-      - NP_BUILD_DEP="numpy==1.13.3"
-      - NP_TEST_DEP="numpy==1.13.3"
+      - NP_BUILD_DEP="numpy==1.16.5"
+      - NP_TEST_DEP="numpy==1.16.5"
       - GEN_DEPS="pyyaml psutil pytest pytest-astropy scipy h5py matplotlib beautifulsoup4 wheel"
       - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
       # Following generated with
@@ -17,22 +17,15 @@ env:
 
 language: python
 # Default Python version is usually 2.7
-python: 3.5
+python: 3.6
 sudo: required
 dist: trusty
 services: docker
 
 matrix:
-  exclude:
-      # Exclude the default Python 3.5 build
-      - python: 3.5
   include:
     # add osx first into the queue as they have lower parallelism
     #
-    - os: osx
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.5
     - os: osx
       language: generic
       env:
@@ -41,8 +34,8 @@ matrix:
       language: generic
       env:
         - MB_PYTHON_VERSION=3.7
-        - NP_BUILD_DEP=numpy==1.14.6
-        - NP_TEST_DEP=numpy==1.14.6
+        - NP_BUILD_DEP=numpy==1.16.5
+        - NP_TEST_DEP=numpy==1.16.5
     - os: osx
       language: generic
       env:
@@ -51,17 +44,6 @@ matrix:
         - NP_BUILD_DEP=numpy==1.17.3
         - NP_TEST_DEP=numpy==1.17.3
         - GEN_DEPS="pyyaml psutil pytest pytest-astropy beautifulsoup4 wheel"
-
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.5
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.5
-        - PLAT=i686
-        # The latest wheel that is used for Matplotlib is 2.0.0b1, which has
-        # bugs that cause Astropy test failures, so we don't include it here.
-        - GEN_DEPS="pyyaml psutil pytest pytest-astropy scipy h5py beautifulsoup4 wheel"
 
     - os: linux
       env:
@@ -76,14 +58,14 @@ matrix:
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.7
-        - NP_BUILD_DEP=numpy==1.14.6
-        - NP_TEST_DEP=numpy==1.14.6
+        - NP_BUILD_DEP=numpy==1.16.5
+        - NP_TEST_DEP=numpy==1.16.5
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.14.6
-        - NP_TEST_DEP=numpy==1.14.6
+        - NP_BUILD_DEP=numpy==1.16.5
+        - NP_TEST_DEP=numpy==1.16.5
         - GEN_DEPS="pyyaml psutil pytest pytest-astropy beautifulsoup4 wheel"
 
     - os: linux
