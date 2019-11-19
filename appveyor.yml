@@ -9,7 +9,7 @@ environment:
     NP_BUILD_DEP: "numpy==1.16.5"
     NP_TEST_DEP: "numpy==1.16.5"
     OTHER_BUILD_DEP: "cython jinja2"
-    OTHER_TEST_DEP: "pytest-astropy"
+    OTHER_TEST_DEP: "pytest-doctestplus==0.4.0 pytest-astropy"
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
     WHEELHOUSE_UPLOADER_SECRET:
         secure:
