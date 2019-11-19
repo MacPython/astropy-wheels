@@ -5,27 +5,25 @@ environment:
   global:
     REPO_DIR: astropy
     PACKAGE_NAME: astropy
-    BUILD_COMMIT: v3.2.3
-    NP_BUILD_DEP: "numpy==1.13.3"
-    NP_TEST_DEP: "numpy==1.13.3"
+    BUILD_COMMIT: v4.0rc1
+    NP_BUILD_DEP: "numpy==1.16.5"
+    NP_TEST_DEP: "numpy==1.16.5"
     OTHER_BUILD_DEP: "cython jinja2"
-    OTHER_TEST_DEP: "pytest-astropy"
+    OTHER_TEST_DEP: "pytest-doctestplus==0.4.0 pytest-astropy"
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
     WHEELHOUSE_UPLOADER_SECRET:
         secure:
             4QS/NVw6J8KsxGPpAf6XD54ALx5ifr7xNqDOQhtpAvGPAeAx2ljmQ+gv2bYHs8YJ
 
   matrix:
-    - PYTHON: C:\Python35
-    - PYTHON: C:\Python35-x64
     - PYTHON: C:\Python36
     - PYTHON: C:\Python36-x64
     - PYTHON: C:\Python37
-      NP_BUILD_DEP: numpy==1.14.4
-      NP_TEST_DEP: "numpy==1.14.6"
+      NP_BUILD_DEP: numpy==1.16.5
+      NP_TEST_DEP: "numpy==1.16.5"
     - PYTHON: C:\Python37-x64
-      NP_BUILD_DEP: numpy==1.14.4
-      NP_TEST_DEP: "numpy==1.14.6"
+      NP_BUILD_DEP: numpy==1.16.5
+      NP_TEST_DEP: "numpy==1.16.5"
     - PYTHON: C:\Python38
       NP_BUILD_DEP: numpy==1.17.3
       NP_TEST_DEP: "numpy==1.17.3"
@@ -65,6 +63,7 @@ build_script:
     - python -m pip install wheel
     - cd %REPO_DIR%
     - git checkout %BUILD_COMMIT%
+    - git apply ..\patches\free_space_in_dir.path
     - python setup.py bdist_wheel
     - cd ..
 
