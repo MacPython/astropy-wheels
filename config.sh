@@ -22,6 +22,9 @@ function run_tests {
     local patch_file=$(abspath ../patches/test_system_file_never_expired.patch)
     (cd $ASTROPY_INSTALL_DIR && patch -p0 < $patch_file)
 
+    local patch_file=$(abspath ../patches/test_output_verify.patch)
+    (cd $ASTROPY_INSTALL_DIR && patch -p0 < $patch_file)
+
     # Runs tests on installed distribution from an empty directory
     python --version
     python -c "import sys; import astropy; sys.exit(astropy.test(remote_data='none'))"
