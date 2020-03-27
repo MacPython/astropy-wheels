@@ -1,7 +1,7 @@
 env:
   global:
       - REPO_DIR=astropy
-      - BUILD_COMMIT=v4.0
+      - BUILD_COMMIT=v4.0.1
       - PLAT=x86_64
       - UNICODE_WIDTH=32
       - NP_BUILD_DEP="numpy==1.16.5"
@@ -18,11 +18,10 @@ env:
 language: python
 # Default Python version is usually 2.7
 python: 3.6
-sudo: required
 dist: trusty
 services: docker
 
-matrix:
+jobs:
   include:
     # add osx first into the queue as they have lower parallelism
     #
