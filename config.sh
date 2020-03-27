@@ -23,7 +23,7 @@ function run_tests {
     (cd $ASTROPY_INSTALL_DIR && patch -p0 < $patch_file)
 
     local patch_file=$(abspath ../patches/test_output_verify.patch)
-    (cd $ASTROPY_INSTALL_DIR && patch -p1 < $patch_file)
+    (cd $ASTROPY_INSTALL_DIR && patch -p0 < $patch_file)
 
     # Runs tests on installed distribution from an empty directory
     python --version
