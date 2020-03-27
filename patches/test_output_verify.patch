@@ -1,7 +1,7 @@
-diff --git astropy/io/fits/tests/test_hdulist.py astropy/io/fits/tests/test_hdulist.py
+diff --git a/astropy/io/fits/tests/test_hdulist.py b/astropy/io/fits/tests/test_hdulist.py
 index 478ca8562..9c50b7e55 100644
---- astropy/io/fits/tests/test_hdulist.py
-+++ astropy/io/fits/tests/test_hdulist.py
+--- a/astropy/io/fits/tests/test_hdulist.py
++++ b/astropy/io/fits/tests/test_hdulist.py
 @@ -1073,13 +1073,11 @@ class TestHDUListFunctions(FitsTestCase):
          with pytest.raises(VerifyError):
              with fits.open(self.temp('test2.fits'), mode='update') as hdul:
