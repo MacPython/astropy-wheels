@@ -18,11 +18,10 @@ env:
 language: python
 # Default Python version is usually 2.7
 python: 3.6
-sudo: required
 dist: trusty
 services: docker
 
-matrix:
+jobs:
   include:
     # add osx first into the queue as they have lower parallelism
     #
