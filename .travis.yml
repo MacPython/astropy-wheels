@@ -1,7 +1,7 @@
 env:
   global:
       - REPO_DIR=astropy
-      - BUILD_COMMIT=v4.0.1.post1
+      - BUILD_COMMIT=v4.1rc1
       - PLAT=x86_64
       - UNICODE_WIDTH=32
       - NP_BUILD_DEP="numpy==1.16.5"
@@ -87,7 +87,7 @@ before_install:
     - if [[ $TRAVIS_OS_NAME == linux ]]; then
           sudo apt-get install tzdata;
       fi
-    - BUILD_DEPENDS="$NP_BUILD_DEP Cython jinja2 wheel"
+    - BUILD_DEPENDS="$NP_BUILD_DEP Cython jinja2 wheel extension-helpers setuptools_scm"
     - TEST_DEPENDS="$NP_TEST_DEP $GEN_DEPS"
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
