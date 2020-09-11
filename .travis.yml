@@ -102,9 +102,17 @@ script:
     - install_run $PLAT
 
 after_success:
-    # Upload wheels to Rackspace container
-    - pip install wheelhouse-uploader
-    - python -m wheelhouse_uploader upload --local-folder
-          ${TRAVIS_BUILD_DIR}/wheelhouse/
-          --no-update-index
-          wheels
+    # trigger an upload to the shared ecosystem
+    # infrastructure at: https://anaconda.org/scipy-wheels-nightly
+    # for cron jobs only (restricted to master branch once
+    # per week)
+    # The tokens are set from
+    # https://travis-ci.org/github/MacPython/numpy-wheels/settings
+    # originally generated at
+    # anaconda.org/scipy-wheels-nightly/settings/access
+    - ANACONDA_ORG="multibuild-wheels-staging";
+      TOKEN=${ASTROPY_STAGING_UPLOAD_TOKEN};
+    - pip install git+https://github.com/Anaconda-Server/anaconda-client;
+    - if [ -n "${TOKEN}" ] ; then
+        anaconda -t ${TOKEN} upload -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl;
+      fi
