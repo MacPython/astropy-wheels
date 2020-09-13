@@ -10,10 +10,6 @@ environment:
     NP_TEST_DEP: "numpy==1.16.5"
     OTHER_BUILD_DEP: "cython jinja2 extension-helpers setuptools_scm"
     OTHER_TEST_DEP: "pytest-doctestplus==0.4.0 pytest-astropy"
-    WHEELHOUSE_UPLOADER_USERNAME: travis-worker
-    WHEELHOUSE_UPLOADER_SECRET:
-        secure:
-            4QS/NVw6J8KsxGPpAf6XD54ALx5ifr7xNqDOQhtpAvGPAeAx2ljmQ+gv2bYHs8YJ
 
   matrix:
     - PYTHON: C:\Python36
