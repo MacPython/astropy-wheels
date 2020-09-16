@@ -10,10 +10,6 @@ environment:
     NP_TEST_DEP: "numpy==1.16.5"
     OTHER_BUILD_DEP: "cython jinja2 extension-helpers setuptools_scm"
     OTHER_TEST_DEP: "pytest-doctestplus==0.4.0 pytest-astropy"
-    WHEELHOUSE_UPLOADER_USERNAME: travis-worker
-    WHEELHOUSE_UPLOADER_SECRET:
-        secure:
-            4QS/NVw6J8KsxGPpAf6XD54ALx5ifr7xNqDOQhtpAvGPAeAx2ljmQ+gv2bYHs8YJ
 
   matrix:
     - PYTHON: C:\Python36
@@ -90,9 +86,10 @@ artifacts:
     - path: "%REPO_DIR%\\dist\\*"
 
 on_success:
-  # Upload the generated wheel package to Rackspace
-  # On Windows, Apache Libcloud cannot find a standard CA cert bundle so we
-  # disable the ssl checks.
-  - python -m pip install wheelhouse-uploader
-  - "python -m wheelhouse_uploader upload
-    --no-ssl-check --local-folder=%REPO_DIR%\\dist --no-update-index wheels"
+  # Upload the generated wheel package to anaconda.org
+  # ASTROPY_STAGING_UPLOAD_TOKEN is an encrypted variable
+  # used in Appveyor CI config, originally created at
+  # multibuild-wheels-staging site
+  - cmd: set ANACONDA_ORG="multibuild-wheels-staging"
+  - pip install git+https://github.com/Anaconda-Server/anaconda-client
+  - IF NOT "%ASTROPY_STAGING_UPLOAD_TOKEN%" == "" anaconda -t %ASTROPY_STAGING_UPLOAD_TOKEN% upload --force -u %ANACONDA_ORG% "dist\*.whl"

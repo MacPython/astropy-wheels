@@ -7,13 +7,6 @@ env:
       - NP_BUILD_DEP="numpy==1.16.5"
       - NP_TEST_DEP="numpy==1.16.5"
       - GEN_DEPS="pyyaml psutil pytest pytest-doctestplus==0.4.0 pytest-astropy scipy h5py matplotlib beautifulsoup4 wheel"
-      - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
-      # Following generated with
-      # travis encrypt -r MacPython/astropy-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
-      - secure:
-          "MNKyBWOzu7JAUmC0Y+JhPKfytXxY/ADRmUIMEWZV977FLZPgYctqd+lqel2QIFgdHDO1CIdTSymOOFZckM9ICUXg9Ta+8oBjSvAVWO1ahDcToRM2DLq66fKg+NKimd2OfK7x597h/QmUSl4k8XyvyyXgl5jOiLg/EJxNE2r83IA="
-      # Get extra wheels from Rackspace container
-      - MANYLINUX_URL=https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com
 
 language: python
 # Default Python version is usually 2.7
@@ -102,9 +95,17 @@ script:
     - install_run $PLAT
 
 after_success:
-    # Upload wheels to Rackspace container
-    - pip install wheelhouse-uploader
-    - python -m wheelhouse_uploader upload --local-folder
-          ${TRAVIS_BUILD_DIR}/wheelhouse/
-          --no-update-index
-          wheels
+    # trigger an upload to the shared ecosystem
+    # infrastructure at: https://anaconda.org/scipy-wheels-nightly
+    # for cron jobs only (restricted to master branch once
+    # per week)
+    # The tokens are set from
+    # https://travis-ci.org/github/MacPython/numpy-wheels/settings
+    # originally generated at
+    # anaconda.org/scipy-wheels-nightly/settings/access
+    - ANACONDA_ORG="multibuild-wheels-staging";
+      TOKEN=${ASTROPY_STAGING_UPLOAD_TOKEN};
+    - pip install git+https://github.com/Anaconda-Server/anaconda-client;
+    - if [ -n "${TOKEN}" ] ; then
+        anaconda -t ${TOKEN} upload -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl;
+      fi
